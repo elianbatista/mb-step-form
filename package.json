@@ -8,7 +8,8 @@
     "build": "vite build",
     "clean": "rimraf public",
     "copy": "copyfiles -u 1 dist/**/* public/ && copyfiles -u 1 dist/*.html public/ && copyfiles -u 1 dist/*.svg public/",
-    "start": "npm run build && npm run clean && npm run copy && node server.js"
+    "start": "npm run build && npm run clean && npm run copy && node server.js",
+    "lint:script": "eslint"
   },
   "dependencies": {
     "express": "^4.21.0",
@@ -17,10 +18,14 @@
   "devDependencies": {
     "@eslint/js": "^9.11.1",
     "@vitejs/plugin-vue": "^5.1.2",
+    "@vue/eslint-config-prettier": "^9.0.0",
     "copyfiles": "^2.4.1",
     "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.28.0",
     "globals": "^15.9.0",
+    "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "vite": "^5.4.1"
   }
