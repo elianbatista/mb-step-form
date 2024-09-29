@@ -1,0 +1,23 @@
+{
+  "name": "mb-front-test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "clean": "rimraf public",
+    "copy": "copyfiles -u 1 dist/**/* public/ && copyfiles -u 1 dist/*.html public/ && copyfiles -u 1 dist/*.svg public/",
+    "start": "npm run build && npm run clean && npm run copy && node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "vue": "^3.4.37"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^6.0.1",
+    "vite": "^5.4.1"
+  }
+}
