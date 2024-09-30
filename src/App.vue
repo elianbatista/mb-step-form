@@ -7,7 +7,11 @@
     EnterpriseStep,
     PasswordStep,
     ReviewStep,
+    InputError,
   } from '@/components'
+  import { useFetch } from '@/composables'
+
+  const { post, error, loading } = useFetch()
 
   const form = reactive({
     email: '',
@@ -19,6 +23,7 @@
     password: '',
   })
   const currentStepIndex = ref(0)
+  const successMessage = ref('')
 
   const personStep = {
     component: PersonStep,
@@ -59,6 +64,14 @@
   const goToPreviousStep = () => {
     currentStepIndex.value--
   }
+
+  const handleSubmit = async () => {
+    successMessage.value = ''
+    await post('http://localhost:3000/registration', form)
+    if (!error.value) {
+      successMessage.value = 'Formulário enviado com sucesso'
+    }
+  }
 </script>
 
 <template>
@@ -72,7 +85,14 @@
       v-model="form"
       @next="goToNextStep"
       @prev="goToPreviousStep"
+      @send-form="handleSubmit"
     />
+    <div v-if="!loading" :class="$style.feedbackContainer">
+      <InputError v-if="error" :error="error.message" />
+      <div v-else-if="successMessage" :class="$style.success">
+        {{ successMessage }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -91,6 +111,17 @@
 
     .title {
       margin-bottom: 24px;
+    }
+
+    .feedbackContainer {
+      text-align: center;
+      margin-top: 8px;
+
+      .success {
+        color: var(--success);
+        font-size: 14px;
+        margin-top: 4px;
+      }
     }
   }
 </style>
