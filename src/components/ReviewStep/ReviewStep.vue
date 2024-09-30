@@ -4,6 +4,8 @@
   import { TextInput, BaseButton } from '@/components'
   import { useValidation } from '@/composables'
 
+  const emit = defineEmits(['send-form', 'prev'])
+
   const {
     validator,
     validateRequired,
@@ -64,7 +66,7 @@
       return
     }
 
-    console.log(form.value)
+    emit('send-form')
   }
 </script>
 
