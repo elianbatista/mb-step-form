@@ -44,6 +44,8 @@
       padding: 8px;
       border-radius: 4px;
       border: 1px solid #727272;
+      font-size: 16px;
+      font-family: 'Poppins', sans-serif;
 
       &:focus {
         outline: none;
