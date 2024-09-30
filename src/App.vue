@@ -1,59 +1,96 @@
 <script setup>
-  import { reactive } from 'vue'
+  import { computed, reactive, ref } from 'vue'
+
+  import {
+    WelcomeStep,
+    PersonStep,
+    EnterpriseStep,
+    PasswordStep,
+    ReviewStep,
+  } from '@/components'
 
   const form = reactive({
     email: '',
     personType: '',
+    name: '',
+    documentation: '',
+    date: '',
+    phone: '',
+    password: '',
   })
+  const currentStepIndex = ref(0)
 
-  const handleSubmit = () => {
-    console.log(form)
+  const personStep = {
+    component: PersonStep,
+    title: 'Pessoa Física',
+  }
+
+  const enterpriseStep = {
+    component: EnterpriseStep,
+    title: 'Pessoa Jurídica',
+  }
+
+  const steps = [
+    {
+      component: WelcomeStep,
+      title: 'Seja bem vindo(a)',
+    },
+    personStep,
+    {
+      component: PasswordStep,
+      title: 'Senha de acesso',
+    },
+    {
+      component: ReviewStep,
+      title: 'Revise suas informações',
+    },
+  ]
+
+  const currentStep = computed(() => steps[currentStepIndex.value].component)
+
+  const goToNextStep = () => {
+    if (currentStepIndex.value === 0) {
+      steps[1] = form.personType === 'person' ? personStep : enterpriseStep
+    }
+
+    currentStepIndex.value++
+  }
+
+  const goToPreviousStep = () => {
+    currentStepIndex.value--
   }
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <span> Etapa 1 de 4 </span>
-    <h1>Seja bem vindo(a)</h1>
-    <div>
-      <label for="email"> Endereço de e-mail </label>
-      <input id="email" v-model="form.email" type="text" />
-    </div>
-    <div>
-      <input
-        id="person"
-        v-model="form.personType"
-        type="radio"
-        value="person"
-        name="person-type"
-      />
-      <label for="person"> Pessoa física </label>
-    </div>
-    <div>
-      <input
-        id="enterprise"
-        v-model="form.personType"
-        type="radio"
-        value="enterprise"
-        name="person-type"
-      />
-      <label for="person"> Pessoa jurídica </label>
-    </div>
-    <button type="submit">Continuar</button>
-  </form>
+  <div :class="$style.container">
+    <span :class="$style.stepper">
+      Etapa <span>{{ currentStepIndex + 1 }}</span> de {{ steps.length }}
+    </span>
+    <h1 :class="$style.title">{{ steps[currentStepIndex].title }}</h1>
+    <component
+      :is="currentStep"
+      v-model="form"
+      @next="goToNextStep"
+      @prev="goToPreviousStep"
+    />
+  </div>
 </template>
 
-<style scoped>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
+<style lang="scss" module>
+  .container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top: 60px;
+
+    .stepper {
+      span {
+        color: var(--primary-color);
+      }
+    }
+
+    .title {
+      margin-bottom: 24px;
+    }
   }
 </style>

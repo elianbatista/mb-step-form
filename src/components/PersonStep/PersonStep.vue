@@ -12,28 +12,28 @@
   const form = defineModel()
   const errors = reactive({
     name: '',
-    cpf: '',
-    birthdate: '',
+    documentation: '',
+    date: '',
     phone: '',
   })
 
   const hasErrors = computed(
     () =>
       errors.name !== '' ||
-      errors.cpf !== '' ||
-      errors.birthdate !== '' ||
+      errors.documentation !== '' ||
+      errors.date !== '' ||
       errors.phone !== '',
   )
 
   const handleSubmit = () => {
     errors.name = validator([validateRequired(form.value.name)])
-    errors.cpf = validator([
-      validateRequired(form.value.cpf),
-      validateCpf(form.value.cpf),
+    errors.documentation = validator([
+      validateRequired(form.value.documentation),
+      validateCpf(form.value.documentation),
     ])
-    errors.birthdate = validator([
-      validateRequired(form.value.birthdate),
-      validateDate(form.value.birthdate),
+    errors.date = validator([
+      validateRequired(form.value.date),
+      validateDate(form.value.date),
     ])
     errors.phone = validator([validateRequired(form.value.phone)])
 
@@ -54,17 +54,17 @@
       :error="errors.name"
     />
     <TextInput
-      v-model="form.cpf"
+      v-model="form.documentation"
       :class="$style.field"
       label="CPF"
-      :error="errors.cpf"
+      :error="errors.documentation"
     />
     <TextInput
-      v-model="form.birthdate"
+      v-model="form.date"
       :class="$style.field"
       label="Data de nascimento"
       type="date"
-      :error="errors.birthdate"
+      :error="errors.date"
     />
     <TextInput
       v-model="form.phone"
